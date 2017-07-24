@@ -5089,3 +5089,40 @@ m22929_2.x = m22929_1
 @test !isdefined_22929_x(m22929_1)
 @test isdefined_22929_1(m22929_2)
 @test isdefined_22929_x(m22929_2)
+
+# issue 18933
+module GlobalDef18933
+    using Base.Test
+    import Base.sqrt
+    # test that global declaration vs assignment operates correctly in local scope
+    f() = (global sin; nothing)
+    g() = (global cos; cos = 2; nothing)
+    h() = (global sqrt; nothing)
+    @test !@isdefined sin
+    @test !@isdefined cos
+    @test @isdefined sqrt
+    f()
+    g()
+    h()
+    @test !@isdefined sin
+    @test @isdefined cos
+    @test sqrt === Base.sqrt
+    @test cos === 2
+    # test that function definitions declared global
+    # introduce a new, local global
+    let
+        global tan
+        @test !@isdefined tan
+        tan() = nothing
+        @test @isdefined tan
+        @test tan() === nothing
+    end
+    # test that global declaration side-effects don't ignore conditionals
+    if false
+        global sincos
+        nothing
+    end
+    @test @which(sincos) === Base.Math
+    @test @isdefined sincos
+    @test sincos === Base.sincos
+end
