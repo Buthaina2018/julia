@@ -229,6 +229,7 @@ Ac_mul_B(vec::AbstractVector, rowvec::RowVector) = throw(DimensionMismatch("Cann
 
 # Left Division #
 
+\(rowvec1::RowVector, rowvec2::RowVector) = pinv(rowvec1) * rowvec2
 \(mat::AbstractMatrix, rowvec::RowVector) = throw(DimensionMismatch("Cannot left-divide transposed vector by matrix"))
 At_ldiv_B(mat::AbstractMatrix, rowvec::RowVector) = throw(DimensionMismatch("Cannot left-divide transposed vector by matrix"))
 Ac_ldiv_B(mat::AbstractMatrix, rowvec::RowVector) = throw(DimensionMismatch("Cannot left-divide transposed vector by matrix"))
