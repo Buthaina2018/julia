@@ -76,7 +76,7 @@ bimg  = randn(n,2)/2
                 @test_throws DimensionMismatch b'\b
                 @test_throws DimensionMismatch b\b'
                 @test norm(a*x - b, 1)/norm(b) < ε*κ*n*2 # Ad hoc, revisit!
-                @test zeros(eltya,n)\ones(eltya,n) ≈ zeros(eltya,n,1)\ones(eltya,n,1)
+                @test zeros(eltya,n)\ones(eltya,n) ≈ (zeros(eltya,n,1)\ones(eltya,n,1))[1,1]
             end
 
             @testset "Test nullspace" begin
